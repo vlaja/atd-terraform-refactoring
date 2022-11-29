@@ -78,3 +78,12 @@ resource "aws_eip" "this" {
     Name = "${local.project_name}-eip"
   }
 }
+
+# module "dev" {
+#   source = "./modules/instance"
+
+#   instance_name      = "api"
+#   namespace          = "development"
+#   security_group_ids = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
+#   vpc_id             = module.vpc.vpc_id
+# }
