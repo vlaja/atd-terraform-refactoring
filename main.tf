@@ -43,47 +43,31 @@ resource "aws_security_group" "http_https_public" {
   }
 }
 
-resource "tls_private_key" "ssh" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
+moved {
+  from = aws_eip.this
+  to   = module.dev.aws_eip.this
 }
 
-resource "aws_key_pair" "ssh" {
-  key_name   = "${local.project_name}-ssh"
-  public_key = tls_private_key.ssh.public_key_openssh
+moved {
+  from = aws_instance.this
+  to   = module.dev.aws_instance.this
 }
 
-resource "aws_instance" "this" {
-  ami           = data.aws_ami.amazon_linux.id
-  instance_type = "t3.micro"
-
-  subnet_id                   = module.vpc.public_subnets[0]
-  vpc_security_group_ids      = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
-  key_name                    = aws_key_pair.ssh.key_name
-  associate_public_ip_address = true
-
-  tags = {
-    Name = "${local.project_name}-ec2"
-  }
+moved {
+  from = aws_key_pair.ssh
+  to   = module.dev.aws_key_pair.ssh
 }
 
-resource "aws_eip" "this" {
-  instance = aws_instance.this.id
-
-  tags = {
-    Name = "${local.project_name}-eip"
-  }
-
-  tags_all = {
-    Name = "${local.project_name}-eip"
-  }
+moved {
+  from = tls_private_key.ssh
+  to   = module.dev.tls_private_key.ssh
 }
 
-# module "dev" {
-#   source = "./modules/instance"
+module "dev" {
+  source = "./modules/instance"
 
-#   instance_name      = "api"
-#   namespace          = "development"
-#   security_group_ids = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
-#   vpc_id             = module.vpc.vpc_id
-# }
+  instance_name      = "api"
+  namespace          = "development"
+  security_group_ids = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
+  vpc_id             = module.vpc.vpc_id
+}
