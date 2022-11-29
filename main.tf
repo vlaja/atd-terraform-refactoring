@@ -43,26 +43,6 @@ resource "aws_security_group" "http_https_public" {
   }
 }
 
-moved {
-  from = aws_eip.this
-  to   = module.dev.aws_eip.this
-}
-
-moved {
-  from = aws_instance.this
-  to   = module.dev.aws_instance.this
-}
-
-moved {
-  from = aws_key_pair.ssh
-  to   = module.dev.aws_key_pair.ssh
-}
-
-moved {
-  from = tls_private_key.ssh
-  to   = module.dev.tls_private_key.ssh
-}
-
 module "dev" {
   source = "./modules/instance"
 
