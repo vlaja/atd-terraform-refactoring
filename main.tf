@@ -51,3 +51,21 @@ module "dev" {
   security_group_ids = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
   vpc_id             = module.vpc.vpc_id
 }
+
+module "acceptance" {
+  source = "./modules/instance"
+
+  instance_name      = "api"
+  namespace          = "acceptance"
+  security_group_ids = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
+  vpc_id             = module.vpc.vpc_id
+}
+
+module "production" {
+  source = "./modules/instance"
+
+  instance_name      = "api"
+  namespace          = "production"
+  security_group_ids = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
+  vpc_id             = module.vpc.vpc_id
+}
