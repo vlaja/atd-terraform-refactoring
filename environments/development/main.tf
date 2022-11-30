@@ -3,8 +3,8 @@ module "api_instance" {
 
   instance_name      = "api"
   namespace          = local.namespace
-  security_group_ids = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
-  vpc_id             = module.vpc.vpc_id
+  security_group_ids = data.terraform_remote_state.shared.outputs.web_public_security_group_ids
+  vpc_id             = data.terraform_remote_state.shared.outputs.vpc_id
 }
 
 module "bucket" {
