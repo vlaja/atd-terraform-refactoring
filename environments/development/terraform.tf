@@ -3,7 +3,7 @@ terraform {
     organization = "atd-vlaja"
 
     workspaces {
-      name = "monolith"
+      name = "development"
     }
   }
 
