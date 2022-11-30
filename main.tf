@@ -52,6 +52,13 @@ module "dev" {
   vpc_id             = module.vpc.vpc_id
 }
 
+module "dev_bucket" {
+  source = "./modules/s3"
+
+  bucket_name = "assets.development.larva.cloud"
+  namespace   = "development"
+}
+
 module "acceptance" {
   source = "./modules/instance"
 
@@ -61,6 +68,13 @@ module "acceptance" {
   vpc_id             = module.vpc.vpc_id
 }
 
+module "acceptance_bucket" {
+  source = "./modules/s3"
+
+  bucket_name = "assets.acceptance.larva.cloud"
+  namespace   = "acceptance"
+}
+
 module "production" {
   source = "./modules/instance"
 
@@ -68,4 +82,11 @@ module "production" {
   namespace          = "production"
   security_group_ids = [aws_security_group.ssh.id, aws_security_group.http_https_public.id]
   vpc_id             = module.vpc.vpc_id
+}
+
+module "production_bucket" {
+  source = "./modules/s3"
+
+  bucket_name = "assets.larva.cloud"
+  namespace   = "acceptance"
 }
